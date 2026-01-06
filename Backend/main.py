@@ -1,9 +1,14 @@
 from fastapi import FastAPI
 from database import engine, Base
+from src.Models.User import User
 
 Base.metadata.create_all(bind=engine)
 
+from src.Routes import AuthRoutes
+
 app = FastAPI(title="FanatikJersey API")
+
+app.include_router(AuthRoutes.router, prefix="/auth", tags=["auth"])
 
 @app.get("/")
 def read_root():

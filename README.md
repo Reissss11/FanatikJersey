@@ -1,9 +1,9 @@
-# DribleWear
+# FanatikJersey
 
 #Estrutura:
 
-Backend: Python
-Frontend: React 
+Backend: Python FastAPI
+Frontend: React Vite TSX
 Base de Dados: PostgreSQL
 
 #Estrutura das Pastas

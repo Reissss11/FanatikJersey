@@ -11,16 +11,21 @@ class UserCreate(UserBase):
     @field_validator('password')
     def validate_password(cls, v):
         if len(v) < 6:
-            raise ValueError('Password must be at least 6 characters long')
+            raise ValueError('A palavra-passe deve ter pelo menos 6 caracteres')
         if not re.search(r'[A-Z]', v):
-            raise ValueError('Password must contain at least one uppercase letter')
+            raise ValueError('A palavra-passe deve conter pelo menos uma letra maiúscula')
         if not re.search(r'[a-z]', v):
-            raise ValueError('Password must contain at least one lowercase letter')
+            raise ValueError('A palavra-passe deve conter pelo menos uma letra minúscula')
         if not re.search(r'\d', v):
-            raise ValueError('Password must contain at least one number')
+            raise ValueError('A palavra-passe deve conter pelo menos um número')
         return v
 
-class UserLogin(UserBase):
+from typing import Optional
+
+class UserLogin(BaseModel):
+    identifier: Optional[str] = None
+    username: Optional[str] = None
+    email: Optional[str] = None
     password: str
 
 class UserResponse(UserBase):

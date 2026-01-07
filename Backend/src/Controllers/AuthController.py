@@ -41,5 +41,5 @@ def login_user(db: Session, user: UserLogin):
     if not verify_password(user.password, db_user.hashed_password):
         raise HTTPException(status_code=401, detail="Palavra-passe incorreta")
     
-    access_token = create_access_token(data={"sub": db_user.email})
+    access_token = create_access_token(data={"sub": db_user.email, "username": db_user.username})
     return {"access_token": access_token, "token_type": "bearer"}

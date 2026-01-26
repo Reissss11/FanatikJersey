@@ -1,4 +1,5 @@
 import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 import './Layout.css';
 
 interface LayoutProps {
@@ -12,11 +13,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <main className="main-content">
                 {children}
             </main>
-            <footer className="footer">
-                <div className="footer-content">
-                    <p>&copy; {new Date().getFullYear()} FanatikJersey. Todos os direitos reservados.</p>
-                </div>
-            </footer>
+            <Footer />
+
         </div>
     );
 };

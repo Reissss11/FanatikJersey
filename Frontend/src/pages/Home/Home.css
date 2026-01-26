@@ -4,8 +4,9 @@
 }
 
 .home-hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+    font-size: 2rem;
+    /* Reduced from 3rem */
+    margin-bottom: 0.5rem;
     background: linear-gradient(45deg, var(--color-primary), var(--color-accent));
     -webkit-background-clip: text;
     background-clip: text;
@@ -14,6 +15,14 @@
 }
 
 .subtitle {
-    font-size: 1.5rem;
+    font-size: 1rem;
+    /* Reduced from 1.5rem */
     opacity: 0.8;
+}
+
+.home-carousel-section {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: 0;
 }

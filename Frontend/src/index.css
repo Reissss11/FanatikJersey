@@ -4,9 +4,10 @@
   --color-text: #1a1a1a;
   --color-primary: #000000;
   --color-secondary: #f3f3f3;
-  --color-accent: #E11931; /* Example accent color */
+  --color-accent: #E11931;
+  /* Example accent color */
   --color-border: #e5e5e5;
-  
+
   --font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
@@ -27,6 +28,7 @@ body {
   font-family: var(--font-family);
   transition: background-color 0.3s ease, color 0.3s ease;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* Reset buttons */

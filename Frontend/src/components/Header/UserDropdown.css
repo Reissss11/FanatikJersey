@@ -4,23 +4,49 @@
 }
 
 .user-btn {
-    background: transparent;
-    border: 1px solid var(--color-border);
-    color: var(--color-text);
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
+    background: none;
+    border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    padding: 0.5rem;
+    color: var(--color-text);
     font-size: 1rem;
-    font-weight: 500;
-    transition: all 0.2s;
+    border-radius: 4px;
+    /* Added border radius for hover effect */
+    transition: background-color 0.2s;
+    /* Smooth background transition */
 }
 
 .user-btn:hover {
-    background-color: var(--color-bg-secondary, rgba(0, 0, 0, 0.05));
-    border-color: var(--color-primary);
+    background-color: var(--color-bg-alt);
+    /* Subtle hover background */
+}
+
+.header-profile-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+}
+
+.header-profile-placeholder {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.user-name {
+    font-weight: 500;
 }
 
 .arrow {
@@ -33,39 +59,27 @@
     top: 100%;
     right: 0;
     margin-top: 0.5rem;
+    width: 200px;
     background-color: var(--color-bg);
     border: 1px solid var(--color-border);
-    border-radius: 4px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    min-width: 200px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     overflow: hidden;
-    animation: fadeIn 0.1s ease-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-5px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .dropdown-header {
     padding: 1rem;
     border-bottom: 1px solid var(--color-border);
-    background-color: var(--color-bg-secondary, rgba(0, 0, 0, 0.02));
+    background-color: rgba(255, 255, 255, 0.05);
+    /* Slight separation for header */
 }
 
 .user-email {
     display: block;
     font-size: 0.85rem;
-    color: var(--color-text-secondary, #666);
-    white-space: nowrap;
+    color: var(--color-text);
+    opacity: 0.8;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -84,28 +98,30 @@
     background: none;
     border: none;
     color: var(--color-text);
-    font-size: 0.95rem;
     text-decoration: none;
     cursor: pointer;
+    font-size: 0.95rem;
     transition: background-color 0.2s;
 }
 
 .dropdown-item:hover {
-    background-color: var(--color-bg-secondary, rgba(0, 0, 0, 0.05));
-    color: var(--color-primary);
+    background-color: var(--color-bg-alt);
+    /* Use theme variable if available, or lightweight bg */
+    background-color: rgba(128, 128, 128, 0.1);
+    /* Fallback */
 }
 
 .dropdown-item.logout {
-    color: #E11931;
-    /* Red color for logout */
+    color: #ff4444;
+    /* Distinct login color */
 }
 
 .dropdown-item.logout:hover {
-    background-color: rgba(225, 25, 49, 0.05);
+    background-color: rgba(255, 68, 68, 0.1);
 }
 
 .divider {
     height: 1px;
     background-color: var(--color-border);
-    margin: 0;
+    margin: 0.2rem 0;
 }

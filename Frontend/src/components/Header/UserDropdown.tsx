@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './UserDropdown.css';
 
 const UserDropdown = () => {
-    const { user, logout } = useAuth();
+    const { user, logout, profileImage } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -25,6 +26,7 @@ const UserDropdown = () => {
     const handleLogout = () => {
         logout();
         setIsOpen(false);
+        navigate('/');
     };
 
     // The token currently has 'username' which is what we want.
@@ -36,6 +38,11 @@ const UserDropdown = () => {
                 className="user-btn"
                 onClick={() => setIsOpen(!isOpen)}
             >
+                {profileImage ? (
+                    <img src={profileImage} alt="Profile" className="header-profile-img" />
+                ) : (
+                    <div className="header-profile-placeholder">{displayName.charAt(0).toUpperCase()}</div>
+                )}
                 <span className="user-name">{displayName}</span>
                 <span className="arrow">▼</span>
             </button>

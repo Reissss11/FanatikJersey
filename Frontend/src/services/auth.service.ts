@@ -14,6 +14,14 @@ export const authService = {
         return response.data;
     },
 
+    async googleLogin(data: any) {
+        const response = await api.post('/auth/google-login', data);
+        if (response.data.access_token) {
+            localStorage.setItem('token', response.data.access_token);
+        }
+        return response.data;
+    },
+
     logout() {
         localStorage.removeItem('token');
     },

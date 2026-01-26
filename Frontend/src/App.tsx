@@ -5,6 +5,9 @@ import Layout from './components/Layout/Layout' // Corrected path based on typic
 import Home from './pages/Home/Home'
 import Login from './pages/Auth/Login'
 import Register from './pages/Auth/Register'
+import Profile from './pages/Profile/Profile'
+import ProtectedRoute from './components/Shared/ProtectedRoute'
+import AdminDashboard from './pages/Admin/AdminDashboard'
 import './App.css'
 
 function App() {
@@ -12,13 +15,22 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <BrowserRouter>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </Routes>
-          </Layout>
+          {/* The Layout component is now applied within each Route's element */}
+          <Routes>
+            <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <Layout><Profile /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin" element={
+              <ProtectedRoute requiredRole="admin">
+                <Layout><AdminDashboard /></Layout>
+              </ProtectedRoute>
+            } />
+          </Routes>
         </BrowserRouter>
       </AuthProvider>
     </ThemeProvider>

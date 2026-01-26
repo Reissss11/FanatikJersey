@@ -5,14 +5,17 @@ from src.Models.User import User
 
 Base.metadata.create_all(bind=engine)
 
-from src.Routes import AuthRoutes
+from src.Routes import AuthRoutes, UserRoutes, ProfileRoutes
 
 app = FastAPI(title="FanatikJersey API")
 
 # Configure CORS
 origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
     "http://localhost:8000",
-    "http://127.0.0.1:8000" # Standard Vite port just in case
+    "http://127.0.0.1:8000",
+    "http://localhost:3000"
 ]
 
 app.add_middleware(
@@ -24,6 +27,8 @@ app.add_middleware(
 )
 
 app.include_router(AuthRoutes.router, prefix="/auth", tags=["auth"])
+app.include_router(UserRoutes.router, prefix="/users", tags=["users"])
+app.include_router(ProfileRoutes.router, prefix="/profile", tags=["profile"])
 
 @app.get("/")
 def read_root():

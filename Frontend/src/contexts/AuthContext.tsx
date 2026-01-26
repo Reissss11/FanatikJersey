@@ -5,17 +5,16 @@ import { authService } from '../services/auth.service';
 interface User {
     sub: string; // email
     username: string;
+    role?: 'user' | 'admin';
 }
-
-// NOTE: To get username, we would ideally change backend to include 'username' in token
-// or fetch /me. Since I can't easily change backend token structure without risk,
-// I will try to use the email part or just 'User' for now, OR fetch profile.
-// Actually, I can simulate fetching profile or just use what decodes.
 
 interface AuthContextType {
     user: any | null;
+    profileImage: string | null;
     login: (token: string) => void;
     logout: () => void;
+    updateProfileImage: (image: string | null) => void;
+    refreshUser: () => void;
     isAuthenticated: boolean;
 }
 
@@ -23,6 +22,29 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
+    const [profileImage, setProfileImage] = useState<string | null>(null);
+
+    const fetchUserProfile = async () => {
+        try {
+            // Dynamic import to avoid circular dependency
+            const { profileService } = await import('../services/profile.service');
+            const data = await profileService.getProfile();
+
+            // Update profile image
+            if (data.user_images && data.user_images.length > 0) {
+                setProfileImage(data.user_images[data.user_images.length - 1].image_data);
+            }
+
+            // Update user info (sync username if changed)
+            setUser(prev => {
+                if (!prev) return null;
+                return { ...prev, username: data.username, sub: data.email, role: data.role };
+            });
+
+        } catch (error) {
+            console.error("Failed to fetch user profile", error);
+        }
+    };
 
     useEffect(() => {
         const token = authService.getCurrentUser();
@@ -30,6 +52,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             try {
                 const decoded = jwtDecode(token) as User;
                 setUser(decoded);
+                // Fetch latest profile data (image + updated username)
+                fetchUserProfile();
             } catch (error) {
                 console.error("Invalid token", error);
                 authService.logout();
@@ -41,15 +65,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('token', token);
         const decoded = jwtDecode(token) as User;
         setUser(decoded);
+        fetchUserProfile();
     };
 
     const logout = () => {
         authService.logout();
         setUser(null);
+        setProfileImage(null);
+    };
+
+    const updateProfileImage = (image: string | null) => {
+        setProfileImage(image);
+    };
+
+    const refreshUser = () => {
+        fetchUserProfile();
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
+        <AuthContext.Provider value={{ user, profileImage, login, logout, updateProfileImage, refreshUser, isAuthenticated: !!user }}>
             {children}
         </AuthContext.Provider>
     );

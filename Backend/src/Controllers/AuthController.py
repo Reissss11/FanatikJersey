@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from src.Models.User import User
-from src.Schemas.UserSchema import UserCreate, UserLogin
+from src.Schemas.UserSchema import UserCreate, UserLogin, UserGoogleLogin
 from src.Utils.Security import get_password_hash, verify_password, create_access_token
 from fastapi import HTTPException, status
 
@@ -14,7 +14,14 @@ def register_user(db: Session, user: UserCreate):
         raise HTTPException(status_code=400, detail=" Este Nome de utilizador já existe")
     
     hashed_password = get_password_hash(user.password)
-    db_user = User(email=user.email, username=user.username, hashed_password=hashed_password)
+    db_user = User(
+        email=user.email,
+        username=user.username,
+        hashed_password=hashed_password,
+        first_name=user.first_name,
+        last_name=user.last_name,
+        auth_provider="local"
+    )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -40,6 +47,53 @@ def login_user(db: Session, user: UserLogin):
     
     if not verify_password(user.password, db_user.hashed_password):
         raise HTTPException(status_code=401, detail="Palavra-passe incorreta")
+    
+    access_token = create_access_token(data={"sub": db_user.email, "username": db_user.username})
+    return {"access_token": access_token, "token_type": "bearer"}
+
+import random
+import string
+
+def generate_random_username(name: str):
+    # Remove spaces and lower case
+    base = name.replace(" ", "").lower()
+    # Add 4 random digits
+    suffix = ''.join(random.choices(string.digits, k=4))
+    return f"{base}{suffix}"
+
+def google_login_user(db: Session, user: UserGoogleLogin):
+    # Check if user exists by email
+    db_user = db.query(User).filter(User.email == user.email).first()
+    
+    if db_user:
+        # User exists, return token
+        # You might want to update google_id if it's missing, but for now just login
+        access_token = create_access_token(data={"sub": db_user.email, "username": db_user.username})
+        return {"access_token": access_token, "token_type": "bearer"}
+    
+    # User does not exist, create new one
+    # Use provided username or generate one
+    new_username = user.username
+    if not new_username:
+        new_username = generate_random_username(user.first_name)
+        # Ensure uniqueness (simple check, could improve with loop)
+        while db.query(User).filter(User.username == new_username).first():
+             new_username = generate_random_username(user.first_name)
+    
+    # Create user without password (or un-usable one) since it's google auth
+    db_user = User(
+        email=user.email,
+        username=new_username,
+        hashed_password="", # No password for google users
+        first_name=user.first_name,
+        last_name=user.last_name,
+        auth_provider="google",
+        google_id=user.google_id
+    )
+    
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
     
     access_token = create_access_token(data={"sub": db_user.email, "username": db_user.username})
     return {"access_token": access_token, "token_type": "bearer"}

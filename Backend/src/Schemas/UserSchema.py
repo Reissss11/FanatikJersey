@@ -6,6 +6,8 @@ class UserBase(BaseModel):
     email: EmailStr
 
 class UserCreate(UserBase):
+    first_name: str
+    last_name: str
     password: str
 
     @field_validator('password')
@@ -33,6 +35,9 @@ class UserResponse(UserBase):
     username: str
     is_active: bool
     role: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    auth_provider: str
 
     class Config:
         from_attributes = True
@@ -40,3 +45,10 @@ class UserResponse(UserBase):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+class UserGoogleLogin(BaseModel):
+    email: EmailStr
+    google_id: str
+    first_name: str
+    last_name: str
+    username: Optional[str] = None

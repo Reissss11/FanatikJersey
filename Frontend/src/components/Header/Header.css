@@ -55,15 +55,26 @@
 }
 
 .theme-toggle {
-    font-size: 1.5rem;
-    /* Larger icon */
+    font-size: 1.2rem;
     padding: 0.5rem;
     border-radius: 50%;
-    transition: background-color 0.2s;
+    transition: all 0.2s ease;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--color-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
 }
 
 .theme-toggle:hover {
-    background-color: var(--color-secondary);
+    background-color: var(--color-bg-alt);
+    /* Use a subtle background variable if available, typically defined in index.css for dark/light modes */
+    border-color: var(--color-border);
+    transform: scale(1.05);
 }
 
 .login-btn {

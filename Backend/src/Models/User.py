@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy.orm import relationship
 from database import Base
 
 class User(Base):
@@ -10,3 +11,10 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
     role = Column(String, default="user")
+    first_name = Column(String, nullable=True)
+    last_name = Column(String, nullable=True)
+    auth_provider = Column(String, default="local")
+    google_id = Column(String, nullable=True)
+
+    addresses = relationship("Address", back_populates="user", cascade="all, delete-orphan")
+    user_images = relationship("UserImage", back_populates="user", cascade="all, delete-orphan")

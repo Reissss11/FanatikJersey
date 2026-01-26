@@ -15,6 +15,7 @@ const Catalog = () => {
     // UI State
     const [isLoading, setIsLoading] = useState(true);
     const [showFilters, setShowFilters] = useState(false); // Mobile toggle
+    const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
     // Filter State
     const [selectedLeague, setSelectedLeague] = useState<number | undefined>(undefined);
@@ -26,7 +27,7 @@ const Catalog = () => {
     // Pagination State
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const LIMIT = 12;
+    const [limit, setLimit] = useState(12);
 
     // Load Initial Metadata (Leagues, Types)
     useEffect(() => {
@@ -59,7 +60,11 @@ const Catalog = () => {
     useEffect(() => {
         fetchJerseys();
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [selectedLeague, selectedTeam, selectedType, selectedColor, page, search]);
+    }, [selectedLeague, selectedTeam, selectedType, selectedColor, page, search, limit]);
+
+    const toggleDropdown = (name: string) => {
+        setActiveDropdown(activeDropdown === name ? null : name);
+    };
 
     const fetchJerseys = async () => {
         setIsLoading(true);
@@ -74,7 +79,7 @@ const Catalog = () => {
                 },
                 {
                     page,
-                    limit: LIMIT,
+                    limit: limit,
                     sortBy: 'newest'
                 }
             );
@@ -116,7 +121,8 @@ const Catalog = () => {
 
                     <FilterDropdown
                         title="Pesquisa"
-                        defaultOpen={true}
+                        isOpen={activeDropdown === 'search'}
+                        onClick={() => toggleDropdown('search')}
                         activeCount={search ? 1 : 0}
                         onClear={() => { setSearch(''); setPage(1); }}
                     >
@@ -133,8 +139,10 @@ const Catalog = () => {
 
                     <FilterDropdown
                         title="Ligas"
-                        defaultOpen={true}
+                        isOpen={activeDropdown === 'leagues'}
+                        onClick={() => toggleDropdown('leagues')}
                         activeCount={selectedLeague ? 1 : 0}
+                        selectedLabel={selectedLeague ? leagues.find(l => l.id === selectedLeague)?.name : undefined}
                         onClear={() => handleLeagueChange(selectedLeague!)}
                     >
                         <div className="filter-list">
@@ -142,7 +150,7 @@ const Catalog = () => {
                                 <div
                                     key={league.id}
                                     className={`filter-item ${selectedLeague === league.id ? 'active' : ''}`}
-                                    onClick={() => handleLeagueChange(league.id!)}
+                                    onClick={() => { handleLeagueChange(league.id!); setActiveDropdown(null); }}
                                 >
                                     {league.image_base64 && <img src={league.image_base64} alt="" />}
                                     <span>{league.name}</span>
@@ -154,8 +162,10 @@ const Catalog = () => {
                     {selectedLeague && (
                         <FilterDropdown
                             title="Clubes"
-                            defaultOpen={true}
+                            isOpen={activeDropdown === 'teams'}
+                            onClick={() => toggleDropdown('teams')}
                             activeCount={selectedTeam ? 1 : 0}
+                            selectedLabel={selectedTeam ? teams.find(t => t.id === selectedTeam)?.name : undefined}
                             onClear={() => { setSelectedTeam(undefined); setPage(1); }}
                         >
                             <div className="filter-list">
@@ -163,7 +173,7 @@ const Catalog = () => {
                                     <div
                                         key={team.id}
                                         className={`filter-item ${selectedTeam === team.id ? 'active' : ''}`}
-                                        onClick={() => { setSelectedTeam(selectedTeam === team.id ? undefined : team.id); setPage(1); }}
+                                        onClick={() => { setSelectedTeam(selectedTeam === team.id ? undefined : team.id); setPage(1); setActiveDropdown(null); }}
                                     >
                                         {team.image_base64 && <img src={team.image_base64} alt="" />}
                                         <span>{team.name}</span>
@@ -175,8 +185,10 @@ const Catalog = () => {
 
                     <FilterDropdown
                         title="Tipo"
-                        defaultOpen={false}
+                        isOpen={activeDropdown === 'types'}
+                        onClick={() => toggleDropdown('types')}
                         activeCount={selectedType ? 1 : 0}
+                        selectedLabel={selectedType ? types.find(t => t.id === selectedType)?.name : undefined}
                         onClear={() => { setSelectedType(undefined); setPage(1); }}
                     >
                         <div className="filter-chips">
@@ -184,7 +196,7 @@ const Catalog = () => {
                                 <button
                                     key={type.id}
                                     className={`chip ${selectedType === type.id ? 'active' : ''}`}
-                                    onClick={() => { setSelectedType(selectedType === type.id ? undefined : type.id); setPage(1); }}
+                                    onClick={() => { setSelectedType(selectedType === type.id ? undefined : type.id); setPage(1); setActiveDropdown(null); }}
                                 >
                                     {type.name}
                                 </button>
@@ -194,19 +206,21 @@ const Catalog = () => {
 
                     <FilterDropdown
                         title="Cor"
-                        defaultOpen={false}
+                        isOpen={activeDropdown === 'colors'}
+                        onClick={() => toggleDropdown('colors')}
                         activeCount={selectedColor ? 1 : 0}
+                        selectedLabel={selectedColor || undefined}
                         onClear={() => { setSelectedColor(''); setPage(1); }}
                     >
-                        <div className="color-grid">
+                        <div className="filter-list">
                             {colors.map(color => (
                                 <div
                                     key={color}
-                                    className={`color-swatch ${selectedColor === color ? 'active' : ''}`}
-                                    style={{ backgroundColor: color === 'Dourado' ? 'gold' : color === 'Bege' ? '#f5f5dc' : color.toLowerCase() }}
-                                    title={color}
-                                    onClick={() => { setSelectedColor(selectedColor === color ? '' : color); setPage(1); }}
-                                ></div>
+                                    className={`filter-item ${selectedColor === color ? 'active' : ''}`}
+                                    onClick={() => { setSelectedColor(selectedColor === color ? '' : color); setPage(1); setActiveDropdown(null); }}
+                                >
+                                    <span>{color}</span>
+                                </div>
                             ))}
                         </div>
                     </FilterDropdown>
@@ -214,6 +228,24 @@ const Catalog = () => {
 
                 {/* Main Content */}
                 <main className="catalog-content">
+                    <div className="catalog-controls">
+                        <div className="pagination-limit">
+                            <span>Itens por página:</span>
+                            <select
+                                value={limit}
+                                onChange={(e) => {
+                                    setLimit(Number(e.target.value));
+                                    setPage(1);
+                                }}
+                                className="limit-select"
+                            >
+                                <option value={12}>12</option>
+                                <option value={24}>24</option>
+                                <option value={36}>36</option>
+                            </select>
+                        </div>
+                    </div>
+
                     {isLoading ? (
                         <div className="loader-container">A carregar...</div>
                     ) : (

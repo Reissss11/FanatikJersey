@@ -83,6 +83,26 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     min-height: 500px;
     position: relative;
+    overflow: hidden;
+    /* Important for zoom containment */
+    cursor: crosshair;
+    /* Hint interactivity or reset later */
+}
+
+.image-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease;
+    /* restoration for smooth zoom toggle */
+}
+
+.zoom-active .image-wrapper {
+    transform: scale(2.5);
+    /* The Zoom Level */
+    cursor: zoom-out;
 }
 
 .main-image {
@@ -93,8 +113,40 @@
     transition: transform 0.3s ease;
 }
 
-.main-image:hover {
+.main-image-column:not(.zoom-active) .main-image:hover {
     transform: scale(1.05);
+    /* Default hover effect when zoom is OFF */
+}
+
+.zoom-toggle-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.main-image-column:hover .zoom-toggle-btn,
+.zoom-active .zoom-toggle-btn {
+    opacity: 1;
+    /* Show on hover OR when active */
+}
+
+.zoom-toggle-btn:hover {
+    transform: scale(1.1);
+    background-color: #fff;
 }
 
 /* Info Column */

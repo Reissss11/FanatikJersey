@@ -14,6 +14,8 @@ const JerseyDetails = () => {
     const [customNumber, setCustomNumber] = useState("");
     const [selectedPatches, setSelectedPatches] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isZoomEnabled, setIsZoomEnabled] = useState(false);
+    const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
 
     const togglePatch = (patch: string) => {
         setSelectedPatches(prev =>
@@ -21,6 +23,14 @@ const JerseyDetails = () => {
                 ? prev.filter(p => p !== patch)
                 : [...prev, patch]
         );
+    };
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!isZoomEnabled) return;
+        const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+        const x = ((e.clientX - left) / width) * 100;
+        const y = ((e.clientY - top) / height) * 100;
+        setZoomPosition({ x, y });
     };
 
     useEffect(() => {
@@ -71,9 +81,30 @@ const JerseyDetails = () => {
 
                 {/* Middle: Main Image */}
                 {/* User said: "á direira aparece a imagem grande da foto selecionada" */}
-                <div className="main-image-column">
+                <div
+                    className={`main-image-column ${isZoomEnabled ? 'zoom-active' : ''}`}
+                    onMouseMove={handleMouseMove}
+                    onMouseLeave={() => setZoomPosition({ x: 50, y: 50 })}
+                >
                     {selectedImage ? (
-                        <img src={selectedImage.image_base64} alt={`${jersey.team_name} Main`} className="main-image" />
+                        <>
+                            <div className="image-wrapper" style={{
+                                transformOrigin: isZoomEnabled ? `${zoomPosition.x}% ${zoomPosition.y}%` : 'center center'
+                            }}>
+                                <img
+                                    src={selectedImage.image_base64}
+                                    alt={`${jersey.team_name} Main`}
+                                    className="main-image"
+                                />
+                            </div>
+                            <button
+                                className="zoom-toggle-btn"
+                                onClick={() => setIsZoomEnabled(!isZoomEnabled)}
+                                title={isZoomEnabled ? "Desativar Zoom" : "Ativar Zoom"}
+                            >
+                                {isZoomEnabled ? "➖" : "🔍"}
+                            </button>
+                        </>
                     ) : (
                         <div className="no-image">Sem Imagem</div>
                     )}

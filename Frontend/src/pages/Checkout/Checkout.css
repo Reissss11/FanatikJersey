@@ -1,0 +1,275 @@
+.checkout-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    min-height: 80vh;
+}
+
+.checkout-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--color-text);
+}
+
+.checkout-content {
+    display: flex;
+    gap: 2rem;
+}
+
+.checkout-form-column {
+    flex: 2;
+}
+
+.checkout-summary-column {
+    flex: 1;
+}
+
+/* Sections */
+.checkout-section {
+    background: var(--color-surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    border: 1px solid var(--color-border);
+}
+
+.checkout-section h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-primary);
+}
+
+.form-row {
+    display: flex;
+    gap: 2rem;
+    /* Increased from 1rem */
+    margin-bottom: 1.5rem;
+    /* Increased from 1rem */
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    /* Increased from 0.5rem */
+    margin-bottom: 1.5rem;
+    /* Added margin bottom for vertical spacing of single fields */
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.form-input {
+    padding: 0.8rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background: var(--color-background);
+    color: var(--color-text);
+}
+
+/* Payment Methods */
+.payment-methods {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.payment-method-card {
+    flex: 1;
+    min-width: 100px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.payment-method-card.active {
+    border-color: var(--color-primary);
+    background-color: rgba(var(--color-primary-rgb), 0.05);
+}
+
+.payment-method-icon {
+    font-size: 1.5rem;
+}
+
+/* Summary Box */
+.order-summary-box {
+    background: var(--color-surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 100px;
+}
+
+.summary-items {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1rem;
+}
+
+.summary-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.summary-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.summary-item-details h4 {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.summary-item-details p {
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+    margin: 0.2rem 0;
+}
+
+.summary-totals {
+    margin-bottom: 1.5rem;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.total-row.final {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1rem;
+}
+
+.policy-checkbox {
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    font-size: 0.9rem;
+    color: var(--color-destructive, #d32f2f);
+}
+
+.checkout-submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.checkout-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Saved Addresses */
+.saved-addresses-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.saved-address-card {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    background-color: var(--color-background);
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.saved-address-card.active {
+    border-color: var(--color-primary);
+    background-color: rgba(var(--color-primary-rgb), 0.05);
+    box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.address-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-primary);
+}
+
+.saved-address-card p {
+    margin: 0.2rem 0;
+    color: var(--color-text-light);
+}
+
+.saved-address-card.new-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed var(--color-border);
+    color: var(--color-text-light);
+    gap: 0.5rem;
+}
+
+.saved-address-card.new-option:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.address-form-container.read-only-look {
+    opacity: 0.7;
+    pointer-events: none;
+    /* Disable interaction when using saved */
+}
+
+.save-address-option {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--color-border);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .checkout-content {
+        flex-direction: column-reverse;
+        /* Summary on top or bottom? usually bottom or separate. Let's keep normal stack */
+        flex-direction: column;
+    }
+}

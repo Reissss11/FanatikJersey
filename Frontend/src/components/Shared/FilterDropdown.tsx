@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import './FilterDropdown.css';
 
 interface FilterDropdownProps {
     title: string;
     children: React.ReactNode;
-    defaultOpen?: boolean;
+    isOpen?: boolean;
+    onClick?: () => void;
     activeCount?: number;
+    selectedLabel?: string;
     onClear?: () => void;
 }
 
-const FilterDropdown: React.FC<FilterDropdownProps> = ({ title, children, defaultOpen = false, activeCount = 0, onClear }) => {
-    const [isOpen, setIsOpen] = useState(defaultOpen);
-
+const FilterDropdown: React.FC<FilterDropdownProps> = ({ title, children, isOpen, onClick, activeCount = 0, selectedLabel, onClear }) => {
     const handleClear = (e: React.MouseEvent) => {
         e.stopPropagation();
         if (onClear) onClear();
@@ -22,13 +22,15 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ title, children, defaul
         <div className={`filter-dropdown ${isOpen ? 'open' : ''}`}>
             <button
                 className="filter-dropdown-header"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={onClick}
                 aria-expanded={isOpen}
             >
                 <div className="filter-title-group">
                     <span className="filter-title">{title}</span>
-                    {activeCount > 0 && (
-                        <span className="filter-badge">{activeCount}</span>
+                    {selectedLabel ? (
+                        <span className="filter-selected-label">{selectedLabel}</span>
+                    ) : (
+                        activeCount > 0 && <span className="filter-badge">{activeCount}</span>
                     )}
                 </div>
                 <div className="filter-actions_right">
@@ -47,11 +49,13 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ title, children, defaul
                 </div>
             </button>
 
-            <div className={`filter-dropdown-content ${isOpen ? 'expanded' : ''}`}>
-                <div className="filter-content-inner">
-                    {children}
+            {isOpen && (
+                <div className="filter-dropdown-content-popover">
+                    <div className="filter-content-inner">
+                        {children}
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };

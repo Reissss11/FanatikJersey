@@ -4,10 +4,11 @@ from database import engine, Base
 from src.Models.User import User
 from src.Models.Catalog import Jersey # Ensure Jersey table is known
 from src.Models.Cart import CartItem
+from src.Models.Order import Order, OrderItem
 
 Base.metadata.create_all(bind=engine)
 
-from src.Routes import AuthRoutes, UserRoutes, ProfileRoutes, CatalogRoutes, CartRoutes
+from src.Routes import AuthRoutes, UserRoutes, ProfileRoutes, CatalogRoutes, CartRoutes, OrderRoutes
 
 app = FastAPI(title="FanatikJersey API")
 
@@ -33,6 +34,7 @@ app.include_router(UserRoutes.router, prefix="/users", tags=["users"])
 app.include_router(ProfileRoutes.router, prefix="/profile", tags=["profile"])
 app.include_router(CatalogRoutes.router, prefix="/catalog", tags=["catalog"])
 app.include_router(CartRoutes.router, prefix="/cart", tags=["cart"])
+app.include_router(OrderRoutes.router, prefix="/orders", tags=["orders"])
 
 @app.get("/")
 def read_root():

@@ -24,11 +24,8 @@
     height: fit-content;
     position: sticky;
     top: 6rem;
-    max-height: calc(100vh - 8rem);
-    overflow-y: auto;
-    /* Hide scrollbar for cleaner look */
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-border) transparent;
+    padding-top: 0.5rem;
+    z-index: 10;
 }
 
 .catalog-sidebar::-webkit-scrollbar {
@@ -161,34 +158,6 @@
     border-color: var(--color-primary);
 }
 
-/* Color Grid */
-.color-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 0.8rem;
-}
-
-.color-swatch {
-    width: 100%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    border: 1px solid var(--color-border);
-    cursor: pointer;
-    transition: transform 0.2s;
-    position: relative;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.color-swatch:hover {
-    transform: scale(1.15);
-    z-index: 1;
-}
-
-.color-swatch.active {
-    transform: scale(1.15);
-    box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-primary);
-}
-
 /* Mobile Filter Toggle */
 .mobile-filter-btn {
     display: none;
@@ -221,10 +190,55 @@
     /* Ensure it takes full width in mobile/tablet if needed */
 }
 
+.catalog-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+    padding: 0 0.5rem;
+}
+
+.pagination-limit {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background-color: var(--color-surface);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+}
+
+.pagination-limit span {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    font-weight: 500;
+}
+
+.limit-select {
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 0.3rem 0.6rem;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.limit-select:hover {
+    border-color: var(--color-primary);
+}
+
+.limit-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
 /* Grid layout for cards */
 .catalog-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 2rem;
     margin-bottom: 3rem;
     animation: fadeIn 0.5s ease-out;

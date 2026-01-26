@@ -138,9 +138,11 @@ const CartDrawer = () => {
                         </div>
 
                         {isAuthenticated ? (
-                            <button className="checkout-btn">
-                                Finalizar Compra
-                            </button>
+                            <Link to="/checkout" onClick={toggleCart} className="checkout-link">
+                                <button className="checkout-btn">
+                                    Finalizar Compra
+                                </button>
+                            </Link>
                         ) : (
                             <Link to="/login" onClick={toggleCart}>
                                 <button className="checkout-btn login-required-btn">

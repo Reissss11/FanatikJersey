@@ -32,7 +32,9 @@
     justify-content: center;
     align-items: center;
     padding: 1rem;
-    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent 70%); /* Increased opacity to visual check */
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent 70%);
+    /* Increased opacity to visual check */
+    box-sizing: border-box;
 }
 
 .jersey-image-container img {

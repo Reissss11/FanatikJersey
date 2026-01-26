@@ -18,6 +18,7 @@ import JerseyManager from './pages/Admin/JerseyManager'
 import PricingManager from './pages/Admin/PricingManager'
 import JerseyDetails from './pages/Jersey/JerseyDetails'
 import Catalog from './pages/Catalog/Catalog'
+import Checkout from './pages/Checkout/Checkout'
 import './App.css'
 
 function App() {
@@ -36,6 +37,11 @@ function App() {
               <Route path="/profile" element={
                 <ProtectedRoute>
                   <Layout><Profile /></Layout>
+                </ProtectedRoute>
+              } />
+              <Route path="/checkout" element={
+                <ProtectedRoute>
+                  <Layout><Checkout /></Layout>
                 </ProtectedRoute>
               } />
               <Route path="/admin" element={

@@ -9,13 +9,13 @@ import './Header.css';
 
 const Header = () => {
     const { theme, toggleTheme } = useTheme();
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
 
     return (
         <header className="header">
             <div className="header-container">
                 <div className="logo-container">
-                    <Link to="/">
+                    <Link to={user?.role === 'admin' ? "/admin" : "/"}>
                         <img
                             src={theme === 'dark' ? LogoBranco : LogoPreto}
                             alt="FanatikJersey Logo"

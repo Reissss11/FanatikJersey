@@ -34,10 +34,16 @@ const Login = () => {
             // authService.login returns the full response data { access_token: "...", token_type: "..." }
             const data = await authService.login(formData);
 
-            // Update the global auth context state
-            login(data.access_token);
+            // Update the global auth context state and get profile data back
+            const profile = await login(data.access_token);
 
-            navigate('/'); // Redirect to home on success
+            console.log("LOGIN RESULT PROFILE:", profile);
+
+            if (profile && profile.role === 'admin') {
+                navigate('/admin');
+            } else {
+                navigate('/');
+            }
         } catch (err: any) {
             console.error(err);
             if (err.response && err.response.data && err.response.data.detail) {

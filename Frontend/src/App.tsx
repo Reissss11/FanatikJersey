@@ -1,13 +1,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { AuthProvider } from './contexts/AuthContext'
-import Layout from './components/Layout/Layout' // Corrected path based on typical structure or previous context, checking imports
-import Home from './pages/Home/Home'
+import Layout from './components/Layout/Layout'
 import Login from './pages/Auth/Login'
 import Register from './pages/Auth/Register'
 import Profile from './pages/Profile/Profile'
 import ProtectedRoute from './components/Shared/ProtectedRoute'
+import HomeRedirect from './components/Shared/HomeRedirect'
 import AdminDashboard from './pages/Admin/AdminDashboard'
+import AdminPanel from './pages/Admin/AdminPanel'
 import './App.css'
 
 function App() {
@@ -15,9 +16,8 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <BrowserRouter>
-          {/* The Layout component is now applied within each Route's element */}
           <Routes>
-            <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path="/" element={<Layout><HomeRedirect /></Layout>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={
@@ -28,6 +28,11 @@ function App() {
             <Route path="/admin" element={
               <ProtectedRoute requiredRole="admin">
                 <Layout><AdminDashboard /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/panel" element={
+              <ProtectedRoute requiredRole="admin">
+                <Layout><AdminPanel /></Layout>
               </ProtectedRoute>
             } />
           </Routes>

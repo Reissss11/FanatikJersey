@@ -48,7 +48,7 @@ def login_user(db: Session, user: UserLogin):
     if not verify_password(user.password, db_user.hashed_password):
         raise HTTPException(status_code=401, detail="Palavra-passe incorreta")
     
-    access_token = create_access_token(data={"sub": db_user.email, "username": db_user.username})
+    access_token = create_access_token(data={"sub": db_user.email, "username": db_user.username, "role": db_user.role})
     return {"access_token": access_token, "token_type": "bearer"}
 
 import random
@@ -68,7 +68,7 @@ def google_login_user(db: Session, user: UserGoogleLogin):
     if db_user:
         # User exists, return token
         # You might want to update google_id if it's missing, but for now just login
-        access_token = create_access_token(data={"sub": db_user.email, "username": db_user.username})
+        access_token = create_access_token(data={"sub": db_user.email, "username": db_user.username, "role": db_user.role})
         return {"access_token": access_token, "token_type": "bearer"}
     
     # User does not exist, create new one
@@ -95,5 +95,5 @@ def google_login_user(db: Session, user: UserGoogleLogin):
     db.commit()
     db.refresh(db_user)
     
-    access_token = create_access_token(data={"sub": db_user.email, "username": db_user.username})
+    access_token = create_access_token(data={"sub": db_user.email, "username": db_user.username, "role": db_user.role})
     return {"access_token": access_token, "token_type": "bearer"}

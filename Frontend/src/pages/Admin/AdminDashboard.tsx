@@ -15,16 +15,34 @@ const AdminDashboard = () => {
             </div>
 
             <div className="admin-actions-grid">
-                <button className="admin-action-card" onClick={() => navigate('/')}>
+                <button className="admin-action-card" onClick={() => navigate('/?view=user')}>
                     <FaUser className="action-icon" />
                     <h2>Ver Loja</h2>
                     <p>Navegar no site como um utilizador normal</p>
                 </button>
 
-                <button className="admin-action-card primary" onClick={() => navigate('/admin/panel')}>
+                <button className="admin-action-card primary" onClick={() => navigate('/admin/leagues')}>
                     <FaCogs className="action-icon" />
-                    <h2>Painel de Admin</h2>
-                    <p>Gerir produtos, utilizadores e configurações</p>
+                    <h2>Gerir Ligas</h2>
+                    <p>Adicionar e editar ligas</p>
+                </button>
+
+                <button className="admin-action-card primary" onClick={() => navigate('/admin/teams')}>
+                    <FaCogs className="action-icon" />
+                    <h2>Gerir Clubes</h2>
+                    <p>Adicionar e editar clubes</p>
+                </button>
+
+                <button className="admin-action-card primary" onClick={() => navigate('/admin/jerseys')}>
+                    <FaCogs className="action-icon" />
+                    <h2>Gerir Camisolas</h2>
+                    <p>Adicionar camisolas e imagens</p>
+                </button>
+
+                <button className="admin-action-card primary" onClick={() => navigate('/admin/pricing')}>
+                    <FaCogs className="action-icon" />
+                    <h2>Gerir Preços / Tipos</h2>
+                    <p>Definir preços por tipo de camisola</p>
                 </button>
             </div>
         </div>

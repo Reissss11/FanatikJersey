@@ -1,0 +1,106 @@
+.jersey-card {
+    display: flex;
+    flex-direction: column;
+    /* Compact design: Reduce padding/size influence */
+    border-radius: 8px;
+    /* Slightly tighter radius */
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: var(--color-surface);
+    position: relative;
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+    min-width: 200px;
+    /* Ensure minimum width for carousel */
+    max-width: 240px;
+    /* Cap width for compact cards */
+}
+
+.jersey-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.jersey-image-container {
+    width: 100%;
+    height: 200px;
+    /* Fixed height instead of ratio to ensure room for text */
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent 70%); /* Increased opacity to visual check */
+}
+
+.jersey-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    transition: transform 0.2s ease;
+    display: block;
+}
+
+.jersey-card:hover .jersey-image-container img {
+    transform: scale(1.05);
+    /* Slight zoom on hover */
+}
+
+.no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+    background-color: rgba(0, 0, 0, 0.1);
+    font-size: 0.8rem;
+}
+
+.jersey-card-details {
+    padding: 0.8rem;
+    text-align: center;
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+}
+
+.jersey-card-title {
+    margin: 0;
+    font-size: 1rem;
+    /* Smaller Font */
+    font-weight: 600;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.jersey-card-season {
+    margin: 0.2rem 0 0.4rem;
+    font-size: 0.75rem;
+    /* Smaller metadata */
+    color: var(--color-text-light, #888);
+}
+
+.jersey-card-prices {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.2rem;
+}
+
+.jersey-card-original-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 0.8rem;
+}
+
+.jersey-card-current-price {
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: 0.95rem;
+}

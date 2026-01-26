@@ -132,6 +132,10 @@ const Login = () => {
                     </div>
                 </form>
 
+                <div className="auth-footer" style={{ marginTop: '1rem', textAlign: 'center' }}>
+                    <Link to="/forgot-password" style={{ color: 'var(--color-primary)', fontSize: '0.9rem' }}>Esqueceu-se da palavra-passe?</Link>
+                </div>
+
                 <div className="auth-footer">
                     <p>
                         Ainda não tem conta?

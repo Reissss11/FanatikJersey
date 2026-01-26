@@ -17,3 +17,14 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
 @router.post("/google-login", response_model=Token)
 def google_login(user: UserGoogleLogin, db: Session = Depends(get_db)):
     return google_login_user(db, user)
+
+from src.Schemas.UserSchema import UserForgotPassword, UserResetPassword
+from src.Controllers.AuthController import forgot_password, reset_password
+
+@router.post("/forgot-password")
+async def forgot_pwd(data: UserForgotPassword, db: Session = Depends(get_db)):
+    return await forgot_password(db, data)
+
+@router.post("/reset-password")
+def reset_pwd(data: UserResetPassword, db: Session = Depends(get_db)):
+    return reset_password(db, data)

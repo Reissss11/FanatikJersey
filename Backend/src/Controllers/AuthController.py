@@ -97,3 +97,53 @@ def google_login_user(db: Session, user: UserGoogleLogin):
     
     access_token = create_access_token(data={"sub": db_user.email, "username": db_user.username, "role": db_user.role})
     return {"access_token": access_token, "token_type": "bearer"}
+
+from datetime import datetime, timedelta
+import secrets
+from src.Schemas.UserSchema import UserForgotPassword, UserResetPassword
+from src.Utils.EmailService import send_reset_email
+
+async def forgot_password(db: Session, data: UserForgotPassword):
+    user = db.query(User).filter(User.email == data.email).first()
+    if not user:
+        # Standard practice: return success even if user not found (to prevent enumeration)
+        return {"message": "Se o email existir, receberá um link de recuperação."}
+    
+    if user.auth_provider == 'google':
+         return {"message": "Contas Google não podem recuperar password."}
+
+    # Generate Token
+    token = secrets.token_urlsafe(32)
+    user.reset_token = token
+    # Expires in 15 minutes
+    user.reset_token_expires = datetime.utcnow() + timedelta(minutes=15)
+    
+    db.commit()
+    
+    # Send Email
+    try:
+        await send_reset_email(user.email, token)
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+        # rollback token? No, user can try again.
+    
+    return {"message": "Email de recuperação enviado!"}
+
+def reset_password(db: Session, data: UserResetPassword):
+    user = db.query(User).filter(User.reset_token == data.token).first()
+    
+    if not user:
+        raise HTTPException(status_code=400, detail="Token inválido ou expirado")
+        
+    if user.reset_token_expires < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="Token expirado")
+        
+    if data.new_password != data.confirm_password:
+        raise HTTPException(status_code=400, detail="As palavras-passe não coincidem")
+        
+    user.hashed_password = get_password_hash(data.new_password)
+    user.reset_token = None
+    user.reset_token_expires = None
+    
+    db.commit()
+    return {"message": "Palavra-passe alterada com sucesso!"}

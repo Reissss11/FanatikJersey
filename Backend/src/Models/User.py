@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from sqlalchemy.orm import relationship
 from database import Base
+# Note: CartItem relationship defined as string to avoid circular imports
 
 class User(Base):
     __tablename__ = "users"
@@ -15,6 +16,9 @@ class User(Base):
     last_name = Column(String, nullable=True)
     auth_provider = Column(String, default="local")
     google_id = Column(String, nullable=True)
+    reset_token = Column(String, nullable=True)
+    reset_token_expires = Column(DateTime, nullable=True)
 
     addresses = relationship("Address", back_populates="user", cascade="all, delete-orphan")
     user_images = relationship("UserImage", back_populates="user", cascade="all, delete-orphan")
+    cart_items = relationship("CartItem", back_populates="user", cascade="all, delete-orphan")

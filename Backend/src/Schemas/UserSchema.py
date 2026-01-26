@@ -46,6 +46,14 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
+class UserForgotPassword(BaseModel):
+    email: EmailStr
+
+class UserResetPassword(BaseModel):
+    token: str
+    new_password: str
+    confirm_password: str
+
 class UserGoogleLogin(BaseModel):
     email: EmailStr
     google_id: str
